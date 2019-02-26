@@ -116,7 +116,7 @@ void rain() {
   if (effectInit == false) {
     effectInit = true;    
 
-    effectDelay = 200;
+    effectDelay = 12;
 //    selectRandomPalette();
 //    fadingActive = true;
   }
@@ -328,8 +328,56 @@ void sideRain() {
 
 }
 
-// Pixels with random locations and random colors selected from a palette
-// Use with the fadeAll function to allow old pixels to decay
+void juggle() {
+  
+  if (effectInit == false) {
+    effectInit = true;
+    FastLED.clear(); 
+    effectDelay = 45;
+    selectRandomPalette();
+  }
+  
+  fadeToBlackBy( leds, NUM_LEDS, 200);
+  byte dothue = 0;
+  for ( int i = 0; i < 6; i++) {
+    leds[beatsin16( i + 6, 0, NUM_LEDS - 1 )] |= CHSV(dothue, 200, 255);
+    dothue += 32;
+  }
+}
+void barfight() {
+
+  static byte barpos[16];
+  
+  // startup tasks
+  if (effectInit == false) {
+    effectInit = true;
+    effectDelay = 30;
+    for (byte i = 0; i < kMatrixWidth; i++) {
+      barpos[i] = random8(0,8);
+    }
+  }
+
+  for (byte x = 0; x < kMatrixWidth; x++) {
+    for (byte y = 0; y < kMatrixHeight; y++) {
+      if (y < barpos[x]) {
+        // leds[XY(x,y)] = CHSV(cycleHue, 255, 255);
+        leds[XY(x,y)] = CRGB::Red;
+        //leds[XY(x,y)] = CRGB::DarkMagenta;
+      } else {
+        // leds[XY(x,y)] = CRGB(0,128,0);
+        leds[XY(x,y)] = CRGB::Yellow;
+      }
+    }
+
+    byte tempIncr = random(0,6);
+    if (barpos[x] > 0 && tempIncr == 0) barpos[x]--;
+    if (barpos[x] < 16 && tempIncr == 2) barpos[x]++;
+
+    
+  }
+
+}
+
 void confetti() {
 
   // startup tasks

@@ -3,8 +3,8 @@
 #define COLOR_ORDER RGB
 #define CHIPSET     WS2811
 
-#define MAXBRIGHTNESS 72
-#define STARTBRIGHTNESS 102
+#define MAXBRIGHTNESS 150
+#define STARTBRIGHTNESS 125
 
 #define cycleTime 15000
 
@@ -24,6 +24,9 @@
 
 // list of functions that will be displayed
 functionList effectList[] = {
+  juggle,
+  barfight,
+  sideRain,
   BlacK_Blue_Magenta_WhiteNoise, SunsetNoise, es_vintage_57Noise, CloudNoise, ForestNoise, amazingNoise,
   amazing,
   threeSine,
