@@ -24,3 +24,27 @@ uint8_t XY (uint8_t x, uint8_t y) {
   uint8_t j = XYTable[i];
   return j;
 }
+
+// Map LEDs to shades outline
+const uint8_t OutlineTable[] = {
+    0,  1,  2,  3,  4,  5,  6,  17,  18,  29, 30, 31, 32, 33, 34, 35, 24, 23, 12, 11
+};
+
+#define OUTLINESIZE sizeof(OutlineTable)
+
+uint8_t OutlineMap(uint8_t i) {
+  uint8_t j = OutlineTable[i % OUTLINESIZE];
+  return j;
+}
+
+// Map LEDs to shades outline
+const uint8_t Spiral[] = {
+    0,  1,  2,  3,  4,  5,  6,  17,  18,  29, 30, 31, 32, 33, 34, 35, 24, 23, 12, 11, 10, 9, 8, 7, 16, 19, 28, 27, 26, 25, 22, 13, 14, 15, 20, 21
+};
+
+#define OUTLINESIZE2 sizeof(Spiral)
+
+uint8_t OutlineMap2(uint8_t i) {
+  uint8_t j = Spiral[i % OUTLINESIZE2];
+  return j;
+}

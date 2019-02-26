@@ -116,7 +116,7 @@ void rain() {
   if (effectInit == false) {
     effectInit = true;    
 
-    effectDelay = 12;
+    effectDelay = 240;
 //    selectRandomPalette();
 //    fadingActive = true;
   }
@@ -252,7 +252,7 @@ void colorFill() {
 
   // test a bitmask to fill up or down when currentDirection is 0 or 2 (0b00 or 0b10)
   if (!(currentDirection & 1)) {
-    effectDelay = 45; // slower since vertical has fewer pixels
+    effectDelay = 12; // slower since vertical has fewer pixels
     for (byte x = 0; x < kMatrixWidth; x++) {
       byte y = currentRow;
       if (currentDirection == 2) y = kMatrixHeight - 1 - currentRow;
@@ -262,7 +262,7 @@ void colorFill() {
 
   // test a bitmask to fill left or right when currentDirection is 1 or 3 (0b01 or 0b11)
   if (currentDirection & 1) {
-    effectDelay = 20; // faster since horizontal has more pixels
+    effectDelay = 12; // faster since horizontal has more pixels
     for (byte y = 0; y < kMatrixHeight; y++) {
       byte x = currentRow;
       if (currentDirection == 3) x = kMatrixWidth - 1 - currentRow;
@@ -296,18 +296,16 @@ void threeDee() {
 
   for (byte x = 0; x < kMatrixWidth; x++) {
     for (byte y = 0; y < kMatrixHeight; y++) {
-      if (x < 7) {
+      if (x < 3) {
         leds[XY(x, y)] = CRGB::Blue;
-      } else if (x > 8) {
+      } else if (x > 2) {
         leds[XY(x, y)] = CRGB::Red;
-      } else {
-        leds[XY(x, y)] = CRGB::Black;
       }
     }
   }
 
-  leds[XY(6, 0)] = CRGB::Black;
-  leds[XY(9, 0)] = CRGB::Black;
+  leds[XY(6, 0)] = CRGB::Red;
+  leds[XY(9, 0)] = CRGB::Red;
 
 }
 
@@ -418,6 +416,48 @@ void slantBars() {
 }
 
 
+//leds run around the periphery of the shades, changing color every go 'round
+void shadesOutline() {
+  
+  static uint8_t x = 0;
+  
+  //startup tasks
+  if (effectInit == false) {
+    effectInit = true;
+    effectDelay = 25;
+    FastLED.clear();
+    currentPalette = RainbowColors_p;
+  }
+
+  CRGB pixelColor = CHSV(cycleHue, 255, 255);
+  leds[OutlineMap(x)] = pixelColor;
+
+  x++;
+  if (x > (OUTLINESIZE-1)) x = 0;
+  
+}
+
+//leds run around the periphery of the shades, changing color every go 'round
+void spirals() {
+  
+  static uint8_t x = 0;
+  
+  //startup tasks
+  if (effectInit == false) {
+    effectInit = true;
+    effectDelay = 10;
+    FastLED.clear();
+    currentPalette = RainbowColors_p;
+  }
+
+  CRGB pixelColor = CHSV(cycleHue, 255, 255);
+  leds[OutlineMap2(x)] = pixelColor;
+
+  x++;
+  if (x > (OUTLINESIZE2-1)) x = 0;
+  
+}
+
 #define NORMAL 0
 #define RAINBOW 1
 #define charSpacing 2
@@ -427,7 +467,7 @@ void scrollText(byte message, byte style, CRGB fgColor, CRGB bgColor) {
   static byte currentCharColumn = 0;
   static byte paletteCycle = 0;
   static CRGB currentColor;
-  static byte bitBuffer[16] = {0};
+  static byte bitBuffer[6] = {0};
   static byte bitBufferPointer = 0;
 
   // startup tasks
@@ -452,7 +492,7 @@ void scrollText(byte message, byte style, CRGB fgColor, CRGB bgColor) {
 
   CRGB pixelColor;
   for (byte x = 0; x < kMatrixWidth; x++) {
-    for (byte y = 0; y < 5; y++) { // characters are 5 pixels tall
+    for (byte y = 0; y < 6; y++) { // characters are 5 pixels tall
       if (bitRead(bitBuffer[(bitBufferPointer + x) % kMatrixWidth], y) == 1) {
         if (style == RAINBOW) {
           pixelColor = ColorFromPalette(currentPalette, paletteCycle+y*16, 255);
@@ -467,7 +507,7 @@ void scrollText(byte message, byte style, CRGB fgColor, CRGB bgColor) {
   }
 
   currentCharColumn++;
-  if (currentCharColumn > (4 + charSpacing)) {
+  if (currentCharColumn > (6 + charSpacing)) {
     currentCharColumn = 0;
     currentMessageChar++;
     char nextChar = loadStringChar(message, currentMessageChar);

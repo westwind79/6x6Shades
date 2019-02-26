@@ -24,24 +24,30 @@
 
 // list of functions that will be displayed
 functionList effectList[] = {
+  spirals,
+  shadesOutline,
+  scrollTextZero,
+  rain,
+  threeDee,
+  colorFill,
   juggle,
   barfight,
   sideRain,
-  BlacK_Blue_Magenta_WhiteNoise, SunsetNoise, es_vintage_57Noise, CloudNoise, ForestNoise, amazingNoise,
+  BlacK_Blue_Magenta_WhiteNoise, 
+  SunsetNoise, 
+  es_vintage_57Noise, 
+  CloudNoise, 
+  ForestNoise, 
+  amazingNoise,
   amazing,
-  threeSine,
-  // threeDee,
-  scrollTextZero,
+  threeSine,  
   plasma,
   confetti,
   rider,
   scrollTextOne,
   glitter,
   slantBars,
-  scrollTextTwo,
-  colorFill,
-  sideRain,
-  rain
+  scrollTextTwo
 };
 
 const byte numEffects = (sizeof(effectList)/sizeof(effectList[0]));
