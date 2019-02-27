@@ -15,7 +15,7 @@ void BlacK_Blue_Magenta_WhiteNoise() {
     effectDelay = 25;
     FastLED.clear();
      currentPalette = BlacK_Blue_Magenta_White_gp;
-     speed =  15; 
+     speed =  5; 
      scale = 20; 
      colorLoop = 1;
   }

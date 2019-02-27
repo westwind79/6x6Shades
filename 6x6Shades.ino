@@ -3,8 +3,8 @@
 #define COLOR_ORDER RGB
 #define CHIPSET     WS2811
 
-#define MAXBRIGHTNESS 150
-#define STARTBRIGHTNESS 125
+#define MAXBRIGHTNESS 255
+#define STARTBRIGHTNESS 255
 
 #define cycleTime 15000
 
@@ -24,6 +24,7 @@
 
 // list of functions that will be displayed
 functionList effectList[] = {
+  BlacK_Blue_Magenta_WhiteNoise, 
   spirals,
   shadesOutline,
   scrollTextZero,
@@ -33,7 +34,6 @@ functionList effectList[] = {
   juggle,
   barfight,
   sideRain,
-  BlacK_Blue_Magenta_WhiteNoise, 
   SunsetNoise, 
   es_vintage_57Noise, 
   CloudNoise, 
@@ -70,7 +70,7 @@ void setup() {
   FastLED.addLeds<CHIPSET, LED_PIN, COLOR_ORDER>(leds, LAST_VISIBLE_LED + 1);
 
   // set global brightness value
-  FastLED.setBrightness( scale8(currentBrightness, MAXBRIGHTNESS) );
+  FastLED.setBrightness( scale8(STARTBRIGHTNESS, MAXBRIGHTNESS) );
 
   // configure input buttons
   pinMode(MODEBUTTON, INPUT_PULLUP);
