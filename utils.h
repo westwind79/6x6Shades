@@ -12,6 +12,7 @@ byte currentEffect = 0; // index to the currently running effect
 boolean autoCycle = true; // flag for automatic effect changes
 boolean eepromOutdated = false; // flag for when EEPROM may need to be updated
 byte currentBrightness = STARTBRIGHTNESS; // 0-255 will be scaled to 0-MAXBRIGHTNESS
+uint8_t fadeActive = 0;
 
 CRGBPalette16 currentPalette(RainbowColors_p); // global palette storage
 
@@ -55,8 +56,24 @@ void scrollArray(byte scrollDir) {
         leds[XY(scrollX,y)] = leds[XY(scrollX + scrollDir*2 - 1,y)];
       }
     }
-  
 }
+
+void scrollArray2(byte scrollDir) {
+  
+    byte scrollY = 0;
+    for (byte y = 0; y < kMatrixHeight; y++) {
+      if (scrollDir == 0) {
+        scrollY = kMatrixHeight - y;
+      } else if (scrollDir == 1) {
+        scrollY = y;
+      }
+      
+      for (byte x = 0; x < kMatrixWidth; x++) {
+        leds[XY(x, scrollY)] = leds[XY(x, scrollY + scrollDir * 2 - 1)];
+      }
+    }
+}
+
 #define HOLD_PALETTES_X_TIMES_AS_LONG 1
 static uint16_t x;
 static uint16_t y;
@@ -66,7 +83,7 @@ static uint16_t z;
 uint8_t noise[MAX_DIMENSION][MAX_DIMENSION];
 uint8_t colorLoop = 1;
 uint16_t speed = 10; 
-uint16_t scale = 40; // scale is set dynamically once we've started up
+uint16_t scale = 40;
 
 // Fill the x/y array of 8-bit noise values using the inoise8 function.
 void fillnoise8() {
@@ -197,7 +214,7 @@ void ChangePaletteAndSettingsPeriodically() {
 // Pick a random palette from a list
 void selectRandomPalette() {
 
-  switch(random8(8)) {
+  switch(random8(19)) {
     case 0:
     currentPalette = CloudColors_p;
     break;
@@ -225,8 +242,73 @@ void selectRandomPalette() {
     case 7:
     currentPalette = HeatColors_p;
     break;
+    
+    case 8:
+    currentPalette = ib_jul01_gp;
+    break;
+    
+    case 9:
+    currentPalette = es_vintage_57_gp;
+    break;
+    
+    case 10:
+    currentPalette = es_vintage_01_gp;
+    break;
+    
+    case 11:
+    currentPalette = es_rivendell_15_gp;
+    break;
+    
+    case 12:
+    currentPalette = rgi_15_gp;
+    break;
+    
+    case 13:
+    currentPalette = es_emerald_dragon_08_gp;
+    break;
+    
+    case 14:
+    currentPalette = Magenta_Evening_gp;
+    break;
+    
+    case 15:
+    currentPalette = Sunset_Real_gp;
+    break;
+    
+    case 16:
+    currentPalette = BlacK_Blue_Magenta_White_gp;
+    break;
+    
+    case 17:
+    currentPalette = BlacK_Magenta_Red_gp;
+    break;
+    
+    case 18:
+    currentPalette = BlacK_Red_Magenta_Yellow_gp;
+    break;
+   
   }
+}
 
+void ChangePalette() {
+  uint8_t secondHand = ((millis() / 1000) / HOLD_PALETTES_X_TIMES_AS_LONG) % 60;
+  static uint8_t lastSecond = 99;
+  
+  if( lastSecond != secondHand) {
+    lastSecond = secondHand;
+    if( secondHand ==  0)  { selectRandomPalette();}
+    if( secondHand ==  5)  { selectRandomPalette();}
+    if( secondHand == 10)  { selectRandomPalette();}
+    if( secondHand == 15)  { selectRandomPalette();}
+    if( secondHand == 20)  { selectRandomPalette();}
+    if( secondHand == 25)  { selectRandomPalette();}
+    if( secondHand == 30)  { selectRandomPalette();}
+    if( secondHand == 35)  { selectRandomPalette();}
+    if( secondHand == 40)  { SetupRandomPalette(); }
+    if( secondHand == 45)  { selectRandomPalette();}
+    if( secondHand == 50)  { selectRandomPalette();}
+    if( secondHand == 55)  { selectRandomPalette();}
+  }
 }
 
 // Interrupt normal operation to indicate that auto cycle mode has changed

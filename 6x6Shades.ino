@@ -6,7 +6,7 @@
 #define MAXBRIGHTNESS 255
 #define STARTBRIGHTNESS 255
 
-#define cycleTime 15000
+#define cycleTime 60000
 
 #define hueTime 30
 #define EEPROMDELAY 2000
@@ -18,22 +18,39 @@
 #include "font.h"
 #include "XYmap.h"
 #include "utils.h"
+#include "FireworksXY.h"
 #include "effects.h"
 #include "buttons.h"
 
 
 // list of functions that will be displayed
 functionList effectList[] = {
-  BlacK_Blue_Magenta_WhiteNoise, 
-  spirals,
+//  scrollTextOne,
+//  scrollTextZero,
+//  scrollTextTwo,
+//  crazyRainbowV,
+// crazyRainbowH,
+   spinPlasma, colorPortal,
+  
+  radiate,
+  // radiate2,
+  rainUp, 
+  rainDown,
+  greenPortal,
+  // shadesOutline2,
+  rainDown2,
+  threeSineVert,
   shadesOutline,
-  scrollTextZero,
+  fireworks,
+  barfight,
+  snow, 
+  spirals,
   rain,
   threeDee,
   colorFill,
-  juggle,
-  barfight,
+  juggle,  
   sideRain,
+  BlacK_Blue_Magenta_WhiteNoise, 
   SunsetNoise, 
   es_vintage_57Noise, 
   CloudNoise, 
@@ -44,10 +61,8 @@ functionList effectList[] = {
   plasma,
   confetti,
   rider,
-  scrollTextOne,
   glitter,
-  slantBars,
-  scrollTextTwo
+  slantBars
 };
 
 const byte numEffects = (sizeof(effectList)/sizeof(effectList[0]));
@@ -109,7 +124,9 @@ void loop()
 
   // run a fade effect too if the confetti effect is running
   if (effectList[currentEffect] == confetti) fadeAll(1);
-
+ if (fadeActive > 0) {
+    fadeAll(fadeActive);
+  }
   FastLED.show(); // send the contents of the led memory to the LEDs
 
 }

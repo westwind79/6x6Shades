@@ -93,7 +93,10 @@ public:
   }
   
   void Move() {
-    saccum78 oyv = yv;
+    // arduino complained about the below variables -- not being used
+    // In member function 'void Dot::Move()':
+    // FireworksXY.h:97: warning: unused variable 'oyv' 
+    // saccum78 oyv = yv;
     
     if( !show) return;
     yv += gGravity;
