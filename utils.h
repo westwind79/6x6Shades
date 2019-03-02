@@ -76,14 +76,15 @@ void scrollArray2(byte scrollDir) {
 #define MAX_DIMENSION ((kMatrixWidth>kMatrixHeight) ? kMatrixWidth : kMatrixHeight)
 uint8_t noise[MAX_DIMENSION][MAX_DIMENSION];
 
-static uint16_t x;
-static uint16_t y;
-static uint16_t z;
 uint8_t colorLoop = 1;
 uint16_t speed = 10; 
 uint16_t scale = 40;
 
 void fillnoise8() {
+    
+  static uint16_t x;
+  static uint16_t y;
+  static uint16_t z;
   // If we're runing at a low "speed", some 8-bit artifacts become visible
   // from frame-to-frame.  In order to reduce this, we can do some fast data-smoothing.
   // The amount of data smoothing we're doing depends on "speed".
