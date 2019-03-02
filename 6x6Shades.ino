@@ -24,7 +24,6 @@
 
 functionList effectList[] = {
 rainUp,
-twoAnimations2,
 twoAnimations,
 threeSineVert,
 spinPlasma,

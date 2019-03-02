@@ -89,29 +89,6 @@ void rainUp() {
 	// leds[XY(randPixel, (kMatrixHeight - 1)*rainDir3)] = ColorFromPalette(currentPalette, 240, 255);
 }
 
-void twoAnimations2() {
-  
- if (effectInit == false) {
-		effectInit = true;
-		effectDelay = 45;
-		fadeActive = 0;
- }
-  // render the first animation into leds2 
-  spinPlasma();
-  
-  // render the second animation into leds3
-  rainUp();
-
-  // set the blend ratio for the video cross fade
-  // (set ratio to 127 for a constant 50% / 50% blend)
-  uint8_t ratio = beatsin8(5);
-
-  // mix the 2 arrays together
-  for (int i = 0; i < NUM_LEDS; i++) {
-    leds[i] = blend( leds2[i], leds3[i], ratio );
-  }
-
-}
 #define rainDir4 0
 void rainDown() {
 
@@ -182,6 +159,29 @@ void snow() {
 }
 
 
+void twoAnimations2() {
+  
+ if (effectInit == false) {
+    effectInit = true;
+    effectDelay = 45;
+    fadeActive = 0;
+ }
+  // render the first animation into leds2 
+  spinPlasma();
+  
+  // render the second animation into leds3
+  snow();
+
+  // set the blend ratio for the video cross fade
+  // (set ratio to 127 for a constant 50% / 50% blend)
+  uint8_t ratio = beatsin8(5);
+
+  // mix the 2 arrays together
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds[i] = blend( leds2[i], leds3[i], ratio );
+  }
+
+}
 int wave1=0;
 int wave2=0;
 int wave3=0;
