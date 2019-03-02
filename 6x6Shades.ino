@@ -6,7 +6,7 @@
 #define MAXBRIGHTNESS 255
 #define STARTBRIGHTNESS 255
 
-#define cycleTime 60000
+#define cycleTime 15000
 
 #define hueTime 30
 #define EEPROMDELAY 2000
@@ -22,56 +22,52 @@
 #include "effects.h"
 #include "buttons.h"
 
-
-// list of functions that will be displayed
 functionList effectList[] = {
-//  scrollTextOne,
-//  scrollTextZero,
-//  scrollTextTwo,
-//  crazyRainbowV,
-// crazyRainbowH,
-   spinPlasma, colorPortal,
-  
-  radiate,
-  // radiate2,
-  rainUp, 
-  rainDown,
-  greenPortal,
-  // shadesOutline2,
-  rainDown2,
-  threeSineVert,
-  shadesOutline,
-  fireworks,
-  barfight,
-  snow, 
-  spirals,
-  rain,
-  threeDee,
-  colorFill,
-  juggle,  
-  sideRain,
-  BlacK_Blue_Magenta_WhiteNoise, 
-  SunsetNoise, 
-  es_vintage_57Noise, 
-  CloudNoise, 
-  ForestNoise, 
-  amazingNoise,
-  amazing,
-  threeSine,  
-  plasma,
-  confetti,
-  rider,
-  glitter,
-  slantBars
+rainUp,
+twoAnimations2,
+twoAnimations,
+threeSineVert,
+spinPlasma,
+crazyRainbowV,
+crazyRainbowH,
+rainDown,
+rainDown2,
+snow,
+shadesOutline2,
+greenPortal,
+colorPortal,
+fireworks,
+amazingNoise,
+BlacK_Blue_Magenta_WhiteNoise,
+SunsetNoise,
+es_vintage_57Noise,
+CloudNoise,
+ForestNoise,
+amazing,
+rain,
+threeSine,
+plasma,
+rider,
+glitter,
+colorFill,
+threeDee,
+sideRain,
+juggle,
+barfight,
+confetti,
+slantBars,
+shadesOutline,
+spirals,
+scrollTextZero,
+scrollTextOne,
+scrollTextTwo
 };
 
 const byte numEffects = (sizeof(effectList)/sizeof(effectList[0]));
 
 // Runs one time at the start of the program (power up or reset)
 void setup() {
-
-  // check to see if EEPROM has been used yet
-  // if so, load the stored settings
+  Serial.begin(19200);
   byte eepromWasWritten = EEPROM.read(0);
   if (eepromWasWritten == 99) {
     currentEffect = EEPROM.read(1);
@@ -95,8 +91,9 @@ void setup() {
 
 
 // Runs over and over until power off or reset
-void loop()
-{
+void loop() {
+  Serial.print(currentEffect);
+  Serial.print("\n");
   currentMillis = millis(); // save the current timer value
   updateButtons();          // read, debounce, and process the buttons
   doButtons();              // perform actions based on button state
@@ -123,10 +120,12 @@ void loop()
   }
 
   // run a fade effect too if the confetti effect is running
-  if (effectList[currentEffect] == confetti) fadeAll(1);
+  if (effectList[currentEffect] == confetti || effectList[currentEffect] == rainDown2) fadeAll(1);
+ 
  if (fadeActive > 0) {
     fadeAll(fadeActive);
   }
+
   FastLED.show(); // send the contents of the led memory to the LEDs
 
 }

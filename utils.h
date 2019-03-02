@@ -1,5 +1,3 @@
-// Assorted useful functions and variables
-
 // Global variables
 boolean effectInit = false; // indicates if a pattern has been recently switched
 uint16_t effectDelay = 0; // time between automatic effect changes
@@ -75,17 +73,16 @@ void scrollArray2(byte scrollDir) {
 }
 
 #define HOLD_PALETTES_X_TIMES_AS_LONG 1
+#define MAX_DIMENSION ((kMatrixWidth>kMatrixHeight) ? kMatrixWidth : kMatrixHeight)
+uint8_t noise[MAX_DIMENSION][MAX_DIMENSION];
+
 static uint16_t x;
 static uint16_t y;
 static uint16_t z;
-
-#define MAX_DIMENSION ((kMatrixWidth>kMatrixHeight) ? kMatrixWidth : kMatrixHeight)
-uint8_t noise[MAX_DIMENSION][MAX_DIMENSION];
 uint8_t colorLoop = 1;
 uint16_t speed = 10; 
 uint16_t scale = 40;
 
-// Fill the x/y array of 8-bit noise values using the inoise8 function.
 void fillnoise8() {
   // If we're runing at a low "speed", some 8-bit artifacts become visible
   // from frame-to-frame.  In order to reduce this, we can do some fast data-smoothing.
@@ -160,10 +157,10 @@ void mapNoiseToLEDsUsingPalette() {
 
 void SetupRandomPalette() {
   currentPalette = CRGBPalette16( 
-                      CHSV( random8(), 255, 32), 
-                      CHSV( random8(), 255, 255), 
-                      CHSV( random8(), 128, 255), 
-                      CHSV( random8(), 255, 255)); 
+    CHSV( random8(), 255, 32), 
+    CHSV( random8(), 255, 255), 
+    CHSV( random8(), 128, 255), 
+    CHSV( random8(), 255, 255)); 
 }
 
 void SetupBlackAndWhiteStripedPalette() {
@@ -174,7 +171,6 @@ void SetupBlackAndWhiteStripedPalette() {
   currentPalette[4] = CRGB::White;
   currentPalette[8] = CRGB::White;
   currentPalette[12] = CRGB::White;
-
 }
 
 // This function sets up a palette of purple and green stripes.
@@ -214,7 +210,7 @@ void ChangePaletteAndSettingsPeriodically() {
 // Pick a random palette from a list
 void selectRandomPalette() {
 
-  switch(random8(19)) {
+  switch(random8(23)) {
     case 0:
     currentPalette = CloudColors_p;
     break;
@@ -285,6 +281,22 @@ void selectRandomPalette() {
     
     case 18:
     currentPalette = BlacK_Red_Magenta_Yellow_gp;
+    break;
+
+    case 19:
+    currentPalette = retro2_16_gp;
+    break;
+   
+    case 20:
+    currentPalette = Analogous_1_gp;
+    break;
+
+    case 21:
+    currentPalette = es_pinksplash_08_gp;
+    break;
+   
+    case 22:
+    currentPalette = Coral_reef_gp;
     break;
    
   }
